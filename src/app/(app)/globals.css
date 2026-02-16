@@ -3,15 +3,8 @@
 @plugin "@tailwindcss/typography";
 @plugin "tailwindcss-animate";
 
-@custom-variant dark (&:is([data-theme='dark'] *));
-
 /*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
+  Border color compatibility for Tailwind v4
 */
 @layer base {
   *,
@@ -26,6 +19,14 @@
 @theme {
   --font-sans: var(--font-geist-sans), sans-serif;
   --font-mono: var(--font-geist-mono), sans-serif;
+  
+  /* Add your brand colors to Tailwind's theme */
+  --color-dark-50: 243 243 243;
+  --color-dark-60: 237 236 238;
+  --color-dark-500: 19 17 24;
+  --color-white-500: 255 255 255;
+  --color-gray-500: 164 161 170;
+  --color-green-500: 60 209 57;
 }
 
 @utility container {
@@ -34,135 +35,264 @@
   max-width: 76.125rem;
 }
 
-:root {
-  --background: hsl(0 0% 100%);
-  --foreground: hsl(222.2 84% 4.9%);
-
-  --card: hsl(240 5% 96%);
-  --card-foreground: hsl(222.2 84% 4.9%);
-
-  --popover: hsl(0 0% 100%);
-  --popover-foreground: hsl(222.2 84% 4.9%);
-
-  --primary: hsl(222.2 47.4% 11.2%);
-  --primary-foreground: hsl(210 40% 98%);
-
-  --secondary: hsl(210 40% 96.1%);
-  --secondary-foreground: hsl(222.2 47.4% 11.2%);
-
-  --muted: hsl(210 40% 96.1%);
-  --muted-foreground: hsl(215.4 16.3% 46.9%);
-
-  --accent: hsl(210 40% 96.1%);
-  --accent-foreground: hsl(222.2 47.4% 11.2%);
-
-  --destructive: hsl(0 84.2% 60.2%);
-  --destructive-foreground: hsl(210 40% 98%);
-
-  --border: hsl(240 6% 90%);
-  --input: hsl(214.3 31.8% 91.4%);
-  --ring: hsl(222.2 84% 4.9%);
-
-  --radius: hsl(0.2rem);
-
-  --success: hsl(196 52% 74%);
-  --warning: hsl(34 89% 85%);
-  --error: hsl(10, 93%, 70%);
-}
-
-[data-theme='dark'] {
-  --background: hsla(0, 0%, 4%);
-  --foreground: hsl(210 40% 98%);
-
-  --card: hsl(0, 0%, 8%);
-  --card-foreground: hsl(210 40% 98%);
-
-  --popover: hsl(222.2 84% 4.9%);
-  --popover-foreground: hsl(210 40% 98%);
-
-  --primary: hsl(210 40% 98%);
-  --primary-foreground: hsl(0, 0%, 6%);
-
-  --secondary: hsl(217.2 32.6% 17.5%);
-  --secondary-foreground: hsl(210 40% 98%);
-
-  --muted: hsl(217.2 32.6% 17.5%);
-  --muted-foreground: hsl(215 20.2% 65.1%);
-
-  --accent: hsla(197, 100%, 58%);
-  --accent-foreground: hsl(210 40% 98%);
-
-  --destructive: hsl(0 62.8% 30.6%);
-  --destructive-foreground: hsl(210 40% 98%);
-
-  --border: hsla(0, 0%, 100%, 0.1);
-  --input: hsla(0, 0%, 100%, 0.1);
-  --ring: hsl(212.7 26.8% 83.9%);
-
-  --success: hsl(196 100% 14%);
-  --warning: hsl(34 51% 25%);
-  --error: hsl(10 39% 43%);
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-radius: var(--radius);
-  --color-success: var(--success);
-  --color-warning: var(--warning);
-  --color-error: var(--error);
-}
-
-@layer base {
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-size: auto;
-    font-weight: auto;
+/* Custom label utility matching Adrian's %label */
+@layer utilities {
+  .label-text {
+    font-size: 16px;
+    line-height: 24px;
+    text-transform: uppercase;
+  }
+  
+  @media (max-width: 1024px) {
+    .label-text {
+      font-size: 13px;
+    }
   }
 }
+
+:root {
+  /* Spacing System */
+  --base: 24px;
+  --gutter-h: 180px;
+  --block-padding: 120px;
+
+  /* Font System */
+  --font-body: var(--font-geist-sans), sans-serif;
+  --font-jost: var(--font-geist-sans), sans-serif;
+
+  /* BRAND COLOR VARIABLES (for use with var()) */
+  --color-dark-50-rgb: rgba(243, 243, 243, 1);
+  --color-dark-60-rgb: rgba(237, 236, 238, 1);
+  --color-dark-500-rgb: rgba(19, 17, 24, 1);
+  --color-dark-500-5: rgba(19, 17, 24, 0.05);
+  --color-white-500-rgb: rgba(255, 255, 255, 1);
+  --color-white-500-20: rgba(255, 255, 255, 0.2);
+  --color-gray-500-rgb: rgba(164, 161, 170, 1);
+  --color-green-500-rgb: rgba(60, 209, 57, 1);
+
+  /* Base color scale (matching Adrian's colors.scss) */
+  --color-base-0: rgb(255, 255, 255);
+  --color-base-50: rgb(245, 245, 245);
+  --color-base-1000: rgb(0, 0, 0);
+
+  /* Theme Elevation System (light mode) */
+  --theme-elevation-0: var(--color-base-0);
+  --theme-elevation-50: var(--color-base-50);
+  --theme-elevation-1000: var(--color-base-1000);
+
+  /* Theme Variables (matching Adrian's setup) */
+  --theme-bg: var(--theme-elevation-0);
+  --theme-text: var(--color-dark-500-rgb);
+  --theme-input-bg: var(--color-dark-50-rgb);
+  --theme-border-color: var(--color-dark-60-rgb);
+
+  /* Shadcn/UI Theme Variables */
+  --background: 0 0% 100%;
+  --foreground: 240 10% 4%;
+  --card: 0 0% 96%;
+  --card-foreground: 240 10% 4%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 4%;
+  --primary: 240 6% 10%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 5% 96%;
+  --secondary-foreground: 240 6% 10%;
+  --muted: 240 5% 96%;
+  --muted-foreground: 240 4% 46%;
+  --accent: 142 76% 36%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 6% 90%;
+  --input: 240 6% 90%;
+  --ring: 240 10% 4%;
+  --radius: 0.5rem;
+}
+
+/* Responsive Spacing */
+@media (max-width: 1440px) {
+  :root {
+    --gutter-h: 115px;
+    --block-padding: 96px;
+  }
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --gutter-h: 24px;
+    --block-padding: 60px;
+  }
+}
+
+/* =================================================================
+   BASE STYLES
+   ================================================================= */
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: var(--color-dark-60-rgb);
   }
+  
+  html {
+    -webkit-font-smoothing: antialiased;
+    @apply font-sans;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    margin: 0;
+    font-size: 18px;
+    line-height: 32px;
+    font-family: var(--font-body);
+    @apply bg-white text-[rgb(19,17,24)];
+  }
+  
+  @media (max-width: 1024px) {
+    body {
+      font-size: 15px;
+      line-height: 24px;
+    }
+  }
+
+  /* Selection */
+  ::selection {
+    background: var(--color-green-500-rgb);
+    color: white;
+  }
+
+  ::-moz-selection {
+    background: var(--color-green-500-rgb);
+    color: white;
+  }
+
+  /* Images */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  svg {
+    vertical-align: middle;
   }
 }
 
-html {
-  opacity: 0;
-  @apply font-sans;
-}
+/* =================================================================
+   TYPOGRAPHY
+   ================================================================= */
 
-html[data-theme='dark'],
-html[data-theme='light'] {
-  opacity: initial;
-}
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    margin: 0;
+  }
 
-a,
-input,
-button {
-  @apply focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-neutral-600 dark:focus-visible:ring-offset-neutral-900;
+  h1 {
+    margin: 40px 0;
+    font-size: 64px;
+    line-height: 70px;
+  }
+
+  @media (max-width: 1024px) {
+    h1 {
+      margin: 24px 0;
+      font-size: 42px;
+      line-height: 42px;
+    }
+  }
+
+  h2 {
+    margin: 28px 0;
+    font-size: 48px;
+    line-height: 54px;
+  }
+
+  @media (max-width: 1024px) {
+    h2 {
+      margin: 22px 0;
+      font-size: 32px;
+      line-height: 40px;
+    }
+  }
+
+  h3 {
+    margin: 24px 0;
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  @media (max-width: 1024px) {
+    h3 {
+      margin: 20px 0;
+      font-size: 26px;
+      line-height: 32px;
+    }
+  }
+
+  h4 {
+    margin: 20px 0;
+    font-size: 26px;
+    line-height: 32px;
+  }
+
+  @media (max-width: 1024px) {
+    h4 {
+      font-size: 22px;
+      line-height: 30px;
+    }
+  }
+
+  h5 {
+    margin: 20px 0;
+    font-size: 22px;
+    line-height: 30px;
+  }
+
+  @media (max-width: 1024px) {
+    h5 {
+      font-size: 18px;
+      line-height: 24px;
+    }
+  }
+
+  h6 {
+    margin: 20px 0;
+  }
+
+  p {
+    margin: var(--base) 0;
+  }
+
+  @media (max-width: 1024px) {
+    p {
+      margin: calc(var(--base) * 0.75) 0;
+    }
+  }
+
+  ul, ol {
+    padding-left: var(--base);
+    margin: 0 0 var(--base);
+    list-style: none;
+  }
+
+  a {
+    color: currentColor;
+    text-decoration: none;
+  }
+
+  a:focus {
+    opacity: 0.8;
+    outline: none;
+  }
+
+  a:active {
+    opacity: 0.7;
+    outline: none;
+  }
+
+  /* Focus Styles */
+  a:focus-visible,
+  input:focus-visible,
+  button:focus-visible {
+    @apply outline-none ring-2 ring-gray-400 ring-offset-2;
+  }
 }

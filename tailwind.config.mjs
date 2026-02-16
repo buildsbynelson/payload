@@ -42,6 +42,13 @@ export default {
       },
     },
     extend: {
+      // ADD THIS SECTION
+      screens: {
+        'xs': '400px',   // Extra small - phones landscape
+        'sm': '768px',   // Small - tablets
+        'md': '1024px',  // Medium - tablets landscape
+        'lg': '1440px',  // Large - laptops/desktops
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',

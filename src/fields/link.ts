@@ -112,6 +112,12 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
           label: 'Label',
           required: true,
         },
+        {
+          name: 'icon',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Icon',
+        },
       ],
     })
   } else {

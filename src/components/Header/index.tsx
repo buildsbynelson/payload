@@ -1,10 +1,16 @@
+import React from 'react'
 import { getCachedGlobal } from '@/utilities/getGlobals'
-
-import './index.css'
-import { HeaderClient } from './index.client'
+import HeaderComponent from './HeaderComponent'
+import type { Header } from '@/payload-types'
 
 export async function Header() {
-  const header = await getCachedGlobal('header', 1)()
+  let header: Header | null = null
 
-  return <HeaderClient header={header} />
+  try {
+    header = await getCachedGlobal('header', 1)()
+  } catch (error) {
+    console.log(error)
+  }
+
+  return <HeaderComponent header={header} />
 }

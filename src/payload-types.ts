@@ -415,6 +415,7 @@ export interface CallToActionBlock {
           } | null;
           url?: string | null;
           label: string;
+          icon?: (string | null) | Media;
           /**
            * Choose how the link should be rendered.
            */
@@ -436,7 +437,7 @@ export interface Page {
   title: string;
   publishedOn?: string | null;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'customHero';
     richText?: {
       root: {
         type: string;
@@ -463,6 +464,7 @@ export interface Page {
             } | null;
             url?: string | null;
             label: string;
+            icon?: (string | null) | Media;
             /**
              * Choose how the link should be rendered.
              */
@@ -533,6 +535,7 @@ export interface ContentBlock {
           } | null;
           url?: string | null;
           label: string;
+          icon?: (string | null) | Media;
           /**
            * Choose how the link should be rendered.
            */
@@ -1206,6 +1209,7 @@ export interface PagesSelect<T extends boolean = true> {
                     reference?: T;
                     url?: T;
                     label?: T;
+                    icon?: T;
                     appearance?: T;
                   };
               id?: T;
@@ -1254,6 +1258,7 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+              icon?: T;
               appearance?: T;
             };
         id?: T;
@@ -1280,6 +1285,7 @@ export interface ContentBlockSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+              icon?: T;
               appearance?: T;
             };
         id?: T;
@@ -1799,6 +1805,7 @@ export interface Header {
           } | null;
           url?: string | null;
           label: string;
+          icon?: (string | null) | Media;
         };
         id?: string | null;
       }[]
@@ -1812,6 +1819,7 @@ export interface Header {
  */
 export interface Footer {
   id: string;
+  copyright: string;
   navItems?:
     | {
         link: {
@@ -1823,6 +1831,7 @@ export interface Footer {
           } | null;
           url?: string | null;
           label: string;
+          icon?: (string | null) | Media;
         };
         id?: string | null;
       }[]
@@ -1846,6 +1855,7 @@ export interface HeaderSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+              icon?: T;
             };
         id?: T;
       };
@@ -1858,6 +1868,7 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
+  copyright?: T;
   navItems?:
     | T
     | {
@@ -1869,6 +1880,7 @@ export interface FooterSelect<T extends boolean = true> {
               reference?: T;
               url?: T;
               label?: T;
+              icon?: T;
             };
         id?: T;
       };

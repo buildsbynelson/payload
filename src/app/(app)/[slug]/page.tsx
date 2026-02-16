@@ -1,15 +1,17 @@
 import type { Metadata } from 'next'
 
 import { RenderBlocks } from '@/blocks/RenderBlocks'
+import { homeStaticData } from '@/endpoints/seed/home-static'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import configPromise from '@payload-config'
-import { getPayload } from 'payload'
 import { draftMode } from 'next/headers'
-import { homeStaticData } from '@/endpoints/seed/home-static'
-import React from 'react'
+import { getPayload } from 'payload'
 
-import type { Page } from '@/payload-types'
+// import Categories from '@/components/Categories'
+import { Gutter } from '@/components/Gutter'
+// import Promotion from '@/components/Promotion'
+import type { Category, Page } from '@/payload-types'
 import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
@@ -44,11 +46,27 @@ type Args = {
 
 export default async function Page({ params }: Args) {
   const { slug = 'home' } = await params
-  const url = '/' + slug
 
   let page = await queryPageBySlug({
     slug,
   })
+
+  // Fetch categories for home page
+  let categories: Category[] | null = null
+
+  if (slug === 'home') {
+    try {
+      const payload = await getPayload({ config: configPromise })
+      const categoriesData = await payload.find({
+        collection: 'categories',
+        depth: 1,
+        limit: 100,
+      })
+      categories = categoriesData.docs
+    } catch (error) {
+      console.error('Error fetching categories:', error)
+    }
+  }
 
   // Remove this code once your website is seeded
   if (!page && slug === 'home') {
@@ -61,7 +79,17 @@ export default async function Page({ params }: Args) {
 
   const { hero, layout } = page
 
-  return (
+  return slug === 'home' ? (
+    <section>
+
+      <Gutter>
+      <RenderHero {...hero} />
+        
+        {/* <Categories categories={categories} />
+        <Promotion /> */}
+      </Gutter>
+    </section>
+  ) : (
     <article className="pt-16 pb-24">
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />

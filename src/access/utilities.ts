@@ -1,4 +1,6 @@
 import type { User } from '@/payload-types'
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 export const checkRole = (allRoles: User['roles'] = [], user?: User | null): boolean => {
   if (user && allRoles) {
@@ -10,4 +12,8 @@ export const checkRole = (allRoles: User['roles'] = [], user?: User | null): boo
   }
 
   return false
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }

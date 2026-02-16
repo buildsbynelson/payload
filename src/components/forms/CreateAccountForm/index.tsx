@@ -1,9 +1,9 @@
 'use client'
 
+import { Button } from '@/components/Button'
 import { FormError } from '@/components/forms/FormError'
 import { FormItem } from '@/components/forms/FormItem'
 import { Message } from '@/components/Message'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/providers/Auth'
@@ -13,6 +13,7 @@ import React, { useCallback, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 type FormData = {
+  name: string
   email: string
   password: string
   passwordConfirm: string
@@ -24,12 +25,12 @@ export const CreateAccountForm: React.FC = () => {
   const { login } = useAuth()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<null | string>(null)
+  const [error, setError] = useState<string | null>(null)
 
   const {
-    formState: { errors },
-    handleSubmit,
     register,
+    handleSubmit,
+    formState: { errors },
     watch,
   } = useForm<FormData>()
 
@@ -39,11 +40,11 @@ export const CreateAccountForm: React.FC = () => {
   const onSubmit = useCallback(
     async (data: FormData) => {
       const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users`, {
+        method: 'POST',
         body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json',
         },
-        method: 'POST',
       })
 
       if (!response.ok) {
@@ -61,8 +62,9 @@ export const CreateAccountForm: React.FC = () => {
       try {
         await login(data)
         clearTimeout(timer)
-        if (redirect) router.push(redirect)
-        else router.push(`/account?success=${encodeURIComponent('Account created successfully')}`)
+        if (redirect) router.push(redirect as string)
+        else router.push(`/`)
+        window.location.href = '/'
       } catch (_) {
         clearTimeout(timer)
         setError('There was an error with the credentials provided. Please try again.')
@@ -72,65 +74,70 @@ export const CreateAccountForm: React.FC = () => {
   )
 
   return (
-    <form className="max-w-lg py-4" onSubmit={handleSubmit(onSubmit)}>
-      <div className="prose dark:prose-invert mb-6">
-        <p>
-          {`This is where new customers can signup and create a new account. To manage all users, `}
-          <Link href="/admin/collections/users">login to the admin dashboard</Link>.
-        </p>
-      </div>
+    <form 
+      onSubmit={handleSubmit(onSubmit)} 
+      className="mb-6 flex flex-col gap-6 items-start w-full mt-[30px]"
+    >
+      
 
-      <Message error={error} />
+      <Message error={error} className="mb-6" />
 
-      <div className="flex flex-col gap-8 mb-8">
-        <FormItem>
-          <Label htmlFor="email" className="mb-2">
-            Email Address
-          </Label>
-          <Input
-            id="email"
-            {...register('email', { required: 'Email is required.' })}
-            type="email"
-          />
-          {errors.email && <FormError message={errors.email.message} />}
-        </FormItem>
+      <FormItem className="w-full">
+        <Label htmlFor="email">Email Address</Label>
+        <Input
+          id="email"
+          type="email"
+          {...register('email', { required: 'Email is required.' })}
+        />
+        {errors.email && <FormError message={errors.email.message} />}
+      </FormItem>
 
-        <FormItem>
-          <Label htmlFor="password" className="mb-2">
-            New password
-          </Label>
-          <Input
-            id="password"
-            {...register('password', { required: 'Password is required.' })}
-            type="password"
-          />
-          {errors.password && <FormError message={errors.password.message} />}
-        </FormItem>
+      <FormItem className="w-full">
+        <Label htmlFor="name">Full name</Label>
+        <Input
+          id="name"
+          type="text"
+          {...register('name', { required: 'Name is required.' })}
+        />
+        {errors.name && <FormError message={errors.name.message} />}
+      </FormItem>
 
-        <FormItem>
-          <Label htmlFor="passwordConfirm" className="mb-2">
-            Confirm Password
-          </Label>
-          <Input
-            id="passwordConfirm"
-            {...register('passwordConfirm', {
-              required: 'Please confirm your password.',
-              validate: (value) => value === password.current || 'The passwords do not match',
-            })}
-            type="password"
-          />
-          {errors.passwordConfirm && <FormError message={errors.passwordConfirm.message} />}
-        </FormItem>
-      </div>
-      <Button disabled={loading} type="submit" variant="default">
-        {loading ? 'Processing' : 'Create Account'}
-      </Button>
+      <FormItem className="w-full">
+        <Label htmlFor="password">Password</Label>
+        <Input
+          id="password"
+          type="password"
+          {...register('password', { required: 'Password is required.' })}
+        />
+        {errors.password && <FormError message={errors.password.message} />}
+      </FormItem>
 
-      <div className="prose dark:prose-invert mt-8">
-        <p>
-          {'Already have an account? '}
-          <Link href={`/login${allParams}`}>Login</Link>
-        </p>
+      <FormItem className="w-full">
+        <Label htmlFor="passwordConfirm">Confirm Password</Label>
+        <Input
+          id="passwordConfirm"
+          type="password"
+          {...register('passwordConfirm', {
+            required: 'Please confirm your password.',
+            validate: (value) => value === password.current || 'The passwords do not match',
+          })}
+        />
+        {errors.passwordConfirm && <FormError message={errors.passwordConfirm.message} />}
+      </FormItem>
+
+      <Button
+        type="submit"
+        label={loading ? 'Processing' : 'Sign up'}
+        disabled={loading}
+        appearance="primary"
+        className="w-full"
+      />
+
+      <div className="text-sm">
+        {'Already have an account? '}
+        <Link href={`/login${allParams}`} className="hover:underline">
+          Login
+        </Link>
       </div>
     </form>
   )
