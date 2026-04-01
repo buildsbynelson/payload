@@ -8,9 +8,7 @@ import configPromise from '@payload-config'
 import { draftMode } from 'next/headers'
 import { getPayload } from 'payload'
 
-// import Categories from '@/components/Categories'
 import { Gutter } from '@/components/Gutter'
-// import Promotion from '@/components/Promotion'
 import type { Category, Page } from '@/payload-types'
 import { notFound } from 'next/navigation'
 
@@ -82,11 +80,10 @@ export default async function Page({ params }: Args) {
   return slug === 'home' ? (
     <section>
 
-      <Gutter>
+      <Gutter children={undefined}>
       <RenderHero {...hero} />
-        
-        {/* <Categories categories={categories} />
-        <Promotion /> */}
+        {/* <Categories categories={categories} /> */}
+        {/* <Promotion /> */}
       </Gutter>
     </section>
   ) : (
